@@ -1,0 +1,1103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Study Buddy — Yr7 Science Test 2</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+/* ── RESET & BASE ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:        #0f1117;
+  --card:      #1a1d2e;
+  --card2:     #21253a;
+  --border:    #2d3248;
+  --text:      #e2e8f0;
+  --muted:     #64748b;
+  --green:     #6ee7b7;
+  --purple:    #818cf8;
+  --orange:    #fb923c;
+  --red:       #f87171;
+  --correct-bg:#052e16;
+  --wrong-bg:  #2d0a0a;
+  --pad:       clamp(16px,4vw,48px);
+  --max:       860px;
+}
+
+body {
+  font-family: 'Nunito', 'Helvetica Neue', Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  font-size: clamp(14px,1.4vw,16px);
+  line-height: 1.5;
+  padding-bottom: 60px;
+}
+
+/* ── NAV ── */
+.t-nav {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: clamp(10px,1.5vw,14px) var(--pad);
+  background: rgba(15,17,23,.95);
+  border-bottom: 1px solid var(--border);
+  position: sticky; top: 0; z-index: 100;
+  backdrop-filter: blur(8px);
+}
+.nav-brand {
+  font-family: 'Space Mono', monospace;
+  font-size: clamp(11px,1.1vw,13px);
+  color: var(--green);
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+.nav-label {
+  font-family: 'Space Mono', monospace;
+  font-size: clamp(9px,.9vw,11px);
+  color: var(--muted);
+}
+
+/* ── TEST HEADER ── */
+.t-header {
+  background: linear-gradient(135deg,#1a1d2e 0%,#0f1117 60%);
+  border-bottom: 2px solid var(--border);
+  padding: clamp(24px,3.5vw,44px) var(--pad) clamp(18px,2.5vw,32px);
+  text-align: center;
+  position: relative; overflow: hidden;
+}
+.t-header::before {
+  content: ''; position: absolute; top: -60px; right: -40px;
+  width: 220px; height: 220px;
+  background: radial-gradient(circle,rgba(129,140,248,.1) 0%,transparent 70%);
+  border-radius: 50%;
+}
+.t-eyebrow {
+  font-family: 'Space Mono', monospace;
+  font-size: clamp(9px,1vw,11px);
+  letter-spacing: 3px; color: var(--purple);
+  text-transform: uppercase; margin-bottom: 8px;
+}
+.t-title { font-size: clamp(22px,4vw,38px); font-weight: 900; color: #fff; line-height: 1.15; }
+.t-title span { color: var(--purple); }
+.t-subtitle { font-size: clamp(12px,1.3vw,15px); color: var(--muted); margin-top: 6px; }
+
+/* ── MODE TOGGLE ── */
+.mode-row { margin-top: clamp(14px,2vw,22px); }
+.mode-wrap {
+  display: inline-flex; background: rgba(255,255,255,.06);
+  border-radius: 10px; padding: 4px; gap: 4px;
+}
+.mode-btn {
+  background: transparent; border: none; border-radius: 7px;
+  color: #94a3b8; font-family: 'Nunito', sans-serif;
+  font-size: clamp(12px,1.2vw,14px); font-weight: 700;
+  padding: clamp(6px,.8vw,9px) clamp(12px,1.5vw,18px);
+  cursor: pointer; transition: background .15s, color .15s;
+}
+.mode-btn.on { background: var(--card2); color: #fff; }
+.mode-btn:not(.on):hover { color: #cbd5e1; }
+.mode-hint {
+  font-size: clamp(11px,1.1vw,13px); color: var(--muted);
+  margin: 8px auto 0; max-width: 520px; line-height: 1.5;
+}
+
+/* ── PROGRESS ── */
+.prog-wrap {
+  max-width: min(640px,100%); margin: clamp(14px,2vw,22px) auto 0;
+  background: var(--border); border-radius: 99px;
+  height: clamp(6px,.8vw,9px); overflow: hidden;
+}
+.prog-bar {
+  height: 100%; width: 0%;
+  background: linear-gradient(90deg,var(--purple),var(--green));
+  border-radius: 99px; transition: width .4s ease;
+}
+.prog-label {
+  font-family: 'Space Mono', monospace;
+  font-size: clamp(10px,1vw,12px); color: var(--muted);
+  text-align: center; margin-top: 7px;
+}
+
+/* ── MAIN CONTENT ── */
+.t-main { max-width: var(--max); margin: 0 auto; padding: clamp(20px,3vw,40px) var(--pad) 0; }
+
+/* Tip */
+.tip-card {
+  display: flex; align-items: flex-start; gap: 12px;
+  background: #131b2e; border: 1.5px solid #2a3a5c;
+  border-left: 4px solid var(--purple); border-radius: 12px;
+  padding: clamp(12px,1.5vw,16px) clamp(14px,1.8vw,20px);
+  margin-bottom: clamp(8px,1vw,14px);
+}
+.tip-icon { font-size: clamp(18px,2vw,22px); flex-shrink: 0; margin-top: 1px; }
+.tip-txt { font-size: clamp(12px,1.2vw,13px); color: #94a3b8; line-height: 1.65; font-weight: 600; }
+.tip-txt strong { color: #c7d2fe; }
+.tip-txt em { color: var(--text); font-style: normal; }
+
+/* Section headers */
+.sec-hdr {
+  display: flex; align-items: center; gap: clamp(10px,1.5vw,14px);
+  margin: clamp(28px,4vw,48px) 0 clamp(12px,1.5vw,18px);
+}
+.sec-icon {
+  width: clamp(32px,4vw,42px); height: clamp(32px,4vw,42px);
+  border-radius: 10px; display: flex; align-items: center; justify-content: center;
+  font-size: clamp(16px,2vw,20px); flex-shrink: 0;
+}
+.sec-title { font-size: clamp(15px,1.8vw,19px); font-weight: 800; color: #fff; }
+.sec-pill {
+  font-family: 'Space Mono', monospace; font-size: clamp(9px,.9vw,11px);
+  padding: 3px 10px; border-radius: 99px; font-weight: 700;
+  letter-spacing: 1px; margin-left: auto; white-space: nowrap;
+}
+.sec-a .sec-icon{background:rgba(110,231,183,.15)} .sec-a .sec-pill{background:rgba(110,231,183,.15);color:var(--green)}
+.sec-b .sec-icon{background:rgba(129,140,248,.15)} .sec-b .sec-pill{background:rgba(129,140,248,.15);color:var(--purple)}
+.sec-c .sec-icon{background:rgba(251,146,60,.15)}  .sec-c .sec-pill{background:rgba(251,146,60,.15);color:var(--orange)}
+.sec-d .sec-icon{background:rgba(248,113,113,.15)} .sec-d .sec-pill{background:rgba(248,113,113,.15);color:var(--red)}
+.sec-e .sec-icon{background:rgba(52,211,153,.15)}  .sec-e .sec-pill{background:rgba(52,211,153,.15);color:#34d399}
+
+/* Question cards */
+.q-card {
+  background: var(--card); border: 1.5px solid var(--border);
+  border-radius: clamp(12px,1.5vw,16px);
+  padding: clamp(16px,2.5vw,26px); margin-bottom: clamp(12px,1.5vw,16px);
+  transition: border-color .2s;
+}
+.q-card:hover { border-color: #3d4260; }
+.q-num { font-family: 'Space Mono', monospace; font-size: clamp(10px,1vw,11px); color: var(--muted); margin-bottom: 7px; }
+.q-text { font-size: clamp(14px,1.5vw,16px); font-weight: 700; line-height: 1.55; color: #e2e8f0; margin-bottom: clamp(12px,1.5vw,16px); }
+
+/* Options */
+.options { display: flex; flex-direction: column; gap: clamp(7px,.9vw,10px); }
+.option-btn {
+  background: var(--card2); border: 1.5px solid var(--border); border-radius: 9px;
+  color: var(--text); font-family: 'Nunito', sans-serif;
+  font-size: clamp(13px,1.4vw,15px); font-weight: 600;
+  padding: clamp(9px,1.1vw,12px) clamp(12px,1.5vw,16px);
+  text-align: left; cursor: pointer; display: flex; align-items: center;
+  gap: clamp(8px,1vw,12px); line-height: 1.45;
+  transition: background .15s, border-color .15s, transform .1s;
+}
+.option-btn:hover:not(:disabled) { background: #282d44; border-color: var(--purple); transform: translateX(3px); }
+.option-btn .ltr { font-family: 'Space Mono', monospace; font-size: clamp(10px,1vw,11px); color: var(--muted); min-width: 18px; flex-shrink: 0; }
+.option-btn.correct { background: var(--correct-bg); border-color: var(--green); color: var(--green); }
+.option-btn.correct .ltr { color: var(--green); }
+.option-btn.wrong { background: var(--wrong-bg); border-color: var(--red); color: var(--red); }
+.option-btn.wrong .ltr { color: var(--red); }
+.option-btn.selected { background: #252840; border-color: var(--purple); color: var(--text); transform: translateX(3px); }
+.option-btn.selected .ltr { color: var(--purple); }
+.option-btn:disabled { cursor: default; transform: none; }
+/* Test mode: suppress colours until submit */
+.is-test-mode .option-btn.correct,
+.is-test-mode .option-btn.wrong { background: var(--card2); border-color: var(--border); color: var(--text); }
+.is-test-mode .option-btn.correct .ltr,
+.is-test-mode .option-btn.wrong .ltr { color: var(--muted); }
+.is-test-mode .option-btn:disabled:not(.selected) { opacity: .6; }
+
+/* Feedback */
+.feedback {
+  margin-top: clamp(10px,1.2vw,14px); padding: clamp(10px,1.2vw,13px) clamp(12px,1.5vw,16px);
+  border-radius: 9px; font-size: clamp(12px,1.2vw,14px); font-weight: 600;
+  display: none; line-height: 1.6;
+}
+.feedback.show { display: block; }
+.feedback.ok  { background: var(--correct-bg); color: var(--green); border: 1px solid rgba(110,231,183,.3); }
+.feedback.bad { background: var(--wrong-bg); color: #fca5a5; border: 1px solid rgba(248,113,113,.3); }
+.feedback.ok:not(.show),
+.feedback.bad:not(.show),
+.feedback.pending { display: none !important; }
+
+/* Study notes + retry */
+.study-note { margin-top: clamp(12px,1.5vw,16px); max-height: 0; overflow: hidden; opacity: 0; transition: max-height .4s ease, opacity .3s ease; }
+.study-note.show { max-height: 400px; opacity: 1; }
+.sn-inner { background: #1a1533; border: 1.5px solid #5b4fcf; border-radius: 10px; padding: clamp(12px,1.5vw,16px); }
+.sn-text { font-size: clamp(12px,1.2vw,14px); font-weight: 600; color: #c4b5fd; line-height: 1.65; margin-bottom: 12px; }
+.sn-text strong { color: #e0d7ff; font-weight: 800; }
+.sn-text em { color: #a5f3fc; font-style: normal; font-weight: 700; }
+.retry-btn {
+  background: #5b4fcf; border: none; border-radius: 8px; color: #fff;
+  font-family: 'Nunito', sans-serif; font-size: clamp(12px,1.2vw,13px); font-weight: 800;
+  padding: clamp(7px,.9vw,10px) clamp(14px,1.8vw,18px);
+  cursor: pointer; display: inline-flex; align-items: center; gap: 6px;
+  transition: background .15s, transform .1s;
+}
+.retry-btn:hover { background: #7c6fdf; transform: translateY(-1px); }
+.q-card.hi { border-color: #5b4fcf; box-shadow: 0 0 0 3px rgba(91,79,207,.25); }
+
+/* Short answer */
+.sa-intro { font-size: clamp(12px,1.2vw,13px); color: var(--muted); font-weight: 600; font-style: italic; margin-bottom: clamp(12px,1.5vw,16px); }
+.sa-pts-label { font-family: 'Space Mono', monospace; font-size: 10px; color: var(--orange); margin-left: 6px; font-style: normal; }
+.sa-wrap textarea {
+  background: var(--card2); border: 1.5px solid var(--border); border-radius: 9px;
+  color: var(--text); font-family: 'Nunito', sans-serif;
+  font-size: clamp(13px,1.3vw,15px); padding: clamp(9px,1.1vw,12px) clamp(12px,1.5vw,16px);
+  width: 100%; resize: vertical; transition: border-color .2s;
+}
+.sa-wrap textarea:focus { outline: none; border-color: var(--purple); }
+.sa-assess { margin-top: clamp(12px,1.5vw,18px); padding-top: clamp(12px,1.5vw,18px); border-top: 1px solid var(--border); }
+.sa-model { background: #1a2535; border: 1px solid #2a3a5c; border-left: 3px solid var(--orange); border-radius: 8px; padding: clamp(10px,1.2vw,14px) clamp(12px,1.5vw,16px); font-size: clamp(12px,1.2vw,14px); color: #cbd5e1; line-height: 1.65; margin-bottom: clamp(12px,1.5vw,16px); }
+.sa-model strong { color: #fed7aa; display: block; margin-bottom: 5px; font-size: clamp(11px,1.1vw,12px); text-transform: uppercase; letter-spacing: 1px; font-family: 'Space Mono', monospace; }
+.sa-prompt { font-size: clamp(12px,1.2vw,13px); color: var(--muted); font-weight: 700; margin-bottom: 10px; }
+.sa-btns { display: flex; gap: 8px; flex-wrap: wrap; }
+.sa-btn {
+  font-family: 'Nunito', sans-serif; font-size: clamp(12px,1.2vw,13px); font-weight: 800;
+  border: 1.5px solid transparent; border-radius: 8px;
+  padding: clamp(7px,.9vw,10px) clamp(12px,1.5vw,18px);
+  cursor: pointer; display: flex; align-items: center; gap: 6px;
+  transition: opacity .15s, transform .1s;
+}
+.sa-btn:hover:not(:disabled) { opacity: .85; transform: translateY(-1px); }
+.sa-btn:disabled { cursor: default; transform: none; opacity: .5; }
+.sa-btn.sa-correct { background: var(--correct-bg); border-color: var(--green); color: var(--green); }
+.sa-btn.sa-partial  { background: #1c1a00; border-color: #eab308; color: #fde047; }
+.sa-btn.sa-missed   { background: var(--wrong-bg); border-color: var(--red); color: var(--red); }
+.sa-btn.selected-assess { opacity: 1 !important; }
+.sa-score-reveal { margin-top: 10px; font-family: 'Space Mono', monospace; font-size: clamp(11px,1.1vw,12px); color: var(--muted); }
+
+/* Submit */
+.submit-btn {
+  display: block; margin: clamp(24px,3vw,40px) auto 0;
+  background: var(--purple); border: none; border-radius: 10px; color: #fff;
+  font-family: 'Nunito', sans-serif; font-size: clamp(14px,1.4vw,16px); font-weight: 800;
+  padding: clamp(11px,1.3vw,15px) clamp(24px,3vw,40px);
+  cursor: pointer; transition: opacity .15s, transform .1s;
+}
+.submit-btn:hover { opacity: .88; transform: translateY(-2px); }
+
+/* Score box */
+.score-box {
+  display: none; margin: clamp(28px,4vw,48px) 0 0;
+  background: var(--card); border: 2px solid var(--purple);
+  border-radius: clamp(14px,2vw,20px);
+  padding: clamp(24px,3.5vw,40px) clamp(20px,3vw,36px); text-align: center;
+}
+.score-box h2 { font-size: clamp(20px,2.5vw,30px); font-weight: 900; color: #fff; margin-bottom: 6px; }
+.big-score { font-family: 'Space Mono', monospace; font-size: clamp(44px,6vw,68px); font-weight: 700; color: var(--purple); line-height: 1; margin: clamp(10px,1.5vw,16px) 0; }
+.score-sub { font-size: clamp(13px,1.3vw,15px); color: var(--muted); margin-bottom: clamp(12px,1.5vw,20px); }
+.score-grid {
+  display: grid; grid-template-columns: repeat(auto-fit,minmax(clamp(100px,12vw,140px),1fr));
+  gap: clamp(8px,1vw,12px); margin: clamp(12px,1.5vw,20px) 0 clamp(16px,2vw,24px);
+}
+.sg-item { background: var(--card2); border-radius: 10px; padding: clamp(10px,1.2vw,14px) 10px; }
+.sg-lbl { font-size: clamp(10px,.9vw,11px); color: var(--muted); margin-bottom: 4px; }
+.sg-val { font-size: clamp(15px,1.8vw,22px); font-weight: 900; }
+.score-msg { font-size: clamp(13px,1.3vw,15px); color: #94a3b8; margin-bottom: clamp(16px,2vw,24px); }
+.again-btn {
+  background: var(--purple); border: none; border-radius: 10px; color: #fff;
+  font-family: 'Nunito', sans-serif; font-size: clamp(14px,1.4vw,16px); font-weight: 800;
+  padding: clamp(11px,1.3vw,15px) clamp(24px,3vw,40px);
+  cursor: pointer; transition: opacity .15s;
+}
+.again-btn:hover { opacity: .85; }
+
+/* Responsive */
+@media(max-width:480px) { .sec-pill{display:none} .score-grid{grid-template-columns:repeat(2,1fr)} }
+@media(min-width:1024px) { .q-card{padding:26px 30px 22px} .score-grid{grid-template-columns:repeat(5,1fr)} }
+</style>
+</head>
+<body>
+
+<nav class="t-nav">
+  <span class="nav-brand">📚 Study Buddy</span>
+  <span class="nav-label">Year 7 · Science · Test 2</span>
+</nav>
+
+<div class="t-header">
+  <div class="t-eyebrow">Practice Test 2 · Year 7 · S1 T1</div>
+  <h1 class="t-title">Science <span>Challenge</span></h1>
+  <div class="t-subtitle">Particle Theory · Mixtures · Separation · Data Skills</div>
+  <div class="mode-row">
+    <div class="mode-wrap">
+      <button id="btnStudy" class="mode-btn on" onclick="setMode('study')">📖 Study Mode</button>
+      <button id="btnTest"  class="mode-btn"    onclick="setMode('test')">🎯 Test Mode</button>
+    </div>
+    <div class="mode-hint" id="modeHint">📖 <strong>Study Mode</strong> — each answer reveals instantly whether you got it right.</div>
+  </div>
+  <div class="prog-wrap"><div class="prog-bar" id="progBar"></div></div>
+  <div class="prog-label" id="progLabel">0 of 0 answered</div>
+</div>
+
+<div class="t-main">
+  <div class="tip-card">
+    <div class="tip-icon">💡</div>
+    <div class="tip-txt"><strong>Tip:</strong> This is a fresh set of questions on the same topics. Start in <em>🎯 Test Mode</em> for a cold run — then use <em>📖 Study Mode</em> to work through anything you got wrong.</div>
+  </div>
+
+  <!-- SECTION A: Types of Substances -->
+  <div class="sec-hdr sec-a">
+    <div class="sec-icon">🧪</div>
+    <div class="sec-title">Types of Substances</div>
+    <div class="sec-pill">SECTION A</div>
+  </div>
+
+  <div class="q-card" data-q="1">
+    <div class="q-num">Q1 · Multiple Choice</div>
+    <div class="q-text">Which of the following best describes the features of a <em>mixture</em>?</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false"><span class="ltr">A</span> Contains only one type of particle and has the same properties throughout</button>
+      <button class="option-btn" data-correct="true"><span class="ltr">B</span> Contains two or more different substances not chemically joined, and can be separated by physical means</button>
+      <button class="option-btn" data-correct="false"><span class="ltr">C</span> Always looks cloudy or has visible layers</button>
+      <button class="option-btn" data-correct="false"><span class="ltr">D</span> Is always made of exactly two substances combined together</button>
+    </div>
+    <div class="feedback" data-explanation="A mixture contains two or more substances that are physically combined — not chemically bonded — so they keep their own properties and can be separated by physical means (e.g. filtration, evaporation). A pure substance has only one type of particle."></div>
+  </div>
+
+  <div class="q-card" data-q="2">
+    <div class="q-num">Q2 · Multiple Choice</div>
+    <div class="q-text">Using those features — which of the following is a <em>mixture</em>?</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false"><span class="ltr">A</span> Pure copper (Cu)</button>
+      <button class="option-btn" data-correct="false"><span class="ltr">B</span> Carbon dioxide (CO₂)</button>
+      <button class="option-btn" data-correct="false"><span class="ltr">C</span> Distilled water (H₂O)</button>
+      <button class="option-btn" data-correct="true"><span class="ltr">D</span> Air</button>
+    </div>
+    <div class="feedback" data-explanation="Air is a mixture — it contains nitrogen, oxygen, carbon dioxide and other gases physically mixed together. Pure copper is an element; CO₂ and distilled water are compounds. Both elements and compounds are pure substances."></div>
+  </div>
+
+  <div class="q-card" data-q="3">
+    <div class="q-num">Q3 · Multiple Choice</div>
+    <div class="q-text">A compound is best described as a substance that…</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false"><span class="ltr">A</span> …contains only one type of atom and cannot be broken down further</button>
+      <button class="option-btn" data-correct="false"><span class="ltr">B</span> …is a mixture of two or more elements that can be separated by filtering</button>
+      <button class="option-btn" data-correct="true"><span class="ltr">C</span> …is made of two or more different types of atoms chemically bonded in a fixed ratio</button>
+      <button class="option-btn" data-correct="false"><span class="ltr">D</span> …is always a liquid at room temperature</button>
+    </div>
+    <div class="feedback" data-explanation="A compound has two or more different types of atoms bonded together in a fixed ratio — e.g. water is always H₂O (2 hydrogen to 1 oxygen). Option A describes an element. Option B describes a mixture — mixing is not the same as chemical bonding."></div>
+  </div>
+
+  <div class="q-card" data-q="4">
+    <div class="q-num">Q4 · Multiple Choice</div>
+    <div class="q-text">Milk appears uniform and white throughout. A scientist tests it and finds it contains fat droplets, proteins, water, and sugar. What is milk?</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false"><span class="ltr">A</span> A pure substance, because it looks the same throughout</button>
+      <button class="option-btn" data-correct="false"><span class="ltr">B</span> A compound, because it contains more than one type of substance</button>
+      <button class="option-btn" data-correct="true"><span class="ltr">C</span> A mixture, because it contains multiple different substances not chemically joined</button>
+      <button class="option-btn" data-correct="false"><span class="ltr">D</span> An element, because it is a natural substance</button>
+    </div>
+    <div class="feedback" data-explanation="Milk is a mixture — it contains many different substances (fats, proteins, water, sugar) that are physically combined, not chemically bonded. Looking uniform does not make something a pure substance; saltwater also looks uniform but is a mixture."></div>
+  </div>
+
+  <!-- SECTION B: Particle Model -->
+  <div class="sec-hdr sec-b">
+    <div class="sec-icon">⚛️</div>
+    <div class="sec-title">Particle Model of Matter</div>
+    <div class="sec-pill">SECTION B</div>
+  </div>
+
+  <div class="q-card" data-q="5">
+    <div class="q-num">Q5 · Multiple Choice</div>
+    <div class="q-text">Which of the following statements about the particle model is <em>false</em>?</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false"><span class="ltr">A</span> All matter is made up of tiny particles</button>
+      <button class="option-btn" data-correct="false"><span class="ltr">B</span> Particles are attracted to each other</button>
+      <button class="option-btn" data-correct="true"><span class="ltr">C</span> Particles in a solid are stationary and do not move at all</button>
+      <button class="option-btn" data-correct="false"><span class="ltr">D</span> The arrangement of particles changes between solid, liquid, and gas states</button>
+    </div>
+    <div class="feedback" data-explanation="C is false — particles in a solid are NOT stationary. They vibrate continuously in fixed positions. This is a key rule of the particle model: particles are ALWAYS moving in all states of matter, just in different ways."></div>
+  </div>
+
+  <div class="q-card" data-q="6">
+    <div class="q-num">Q6 · Multiple Choice</div>
+    <div class="q-text">Which description best matches the particles in a <em>liquid</em>?</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false"><span class="ltr">A</span> Particles are in a fixed, regular arrangement and vibrate in place</button>
+      <button class="option-btn" data-correct="true"><span class="ltr">B</span> Particles are close together but can move past each other, with moderate attraction between them</button>
+      <button class="option-btn" data-correct="false"><span class="ltr">C</span> Particles are spread far apart and move rapidly in all directions with very little attraction</button>
+      <button class="option-btn" data-correct="false"><span class="ltr">D</span> Particles are locked in place and do not move at all</button>
+    </div>
+    <div class="feedback" data-explanation="In a liquid: particles are close together (like a solid) but can flow past each other (unlike a solid). The attraction between them is moderate — stronger than in a gas, but not enough to hold them in fixed positions. Option A describes a solid; Option C describes a gas."></div>
+  </div>
+
+  <div class="q-card" data-q="7">
+    <div class="q-num">Q7 · Multiple Choice</div>
+    <div class="q-text">A gas is cooled until it becomes a liquid. What happens to its particles?</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false"><span class="ltr">A</span> The particles gain energy and move faster</button>
+      <button class="option-btn" data-correct="false"><span class="ltr">B</span> The particles disappear as the gas condenses</button>
+      <button class="option-btn" data-correct="true"><span class="ltr">C</span> The particles lose energy, slow down, and are drawn closer together by attractions</button>
+      <button class="option-btn" data-correct="false"><span class="ltr">D</span> The particles change into a different type of particle</button>
+    </div>
+    <div class="feedback" data-explanation="When a gas cools, particles lose energy and slow down. As they slow, the attractions between them become strong enough to pull them together — they can no longer move freely in all directions and become a liquid. The particles themselves do not change."></div>
+  </div>
+
+  <!-- SECTION C: Types of Mixtures -->
+  <div class="sec-hdr sec-c">
+    <div class="sec-icon">🔬</div>
+    <div class="sec-title">Types of Mixtures</div>
+    <div class="sec-pill">SECTION C</div>
+  </div>
+
+  <div class="q-card" data-q="8">
+    <div class="q-num">Q8 · Multiple Choice</div>
+    <div class="q-text">Which of the following is a <em>heterogeneous</em> mixture?</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false"><span class="ltr">A</span> Saltwater</button>
+      <button class="option-btn" data-correct="false"><span class="ltr">B</span> Air</button>
+      <button class="option-btn" data-correct="true"><span class="ltr">C</span> Italian salad dressing (oil and vinegar that separate into visible layers)</button>
+      <button class="option-btn" data-correct="false"><span class="ltr">D</span> A copper and zinc alloy (brass)</button>
+    </div>
+    <div class="feedback" data-explanation="Italian dressing is heterogeneous — you can see the oil and vinegar as distinct layers. Saltwater and air are homogeneous (uniform throughout). Brass is also homogeneous — metals mix uniformly in an alloy with no visible separate components."></div>
+  </div>
+
+  <div class="q-card" data-q="9">
+    <div class="q-num">Q9 · Multiple Choice</div>
+    <div class="q-text">A homogeneous mixture is best described as one that…</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false"><span class="ltr">A</span> …contains only one substance</button>
+      <button class="option-btn" data-correct="true"><span class="ltr">B</span> …has a uniform composition throughout — every part looks and behaves the same</button>
+      <button class="option-btn" data-correct="false"><span class="ltr">C</span> …has visible layers or different-looking parts</button>
+      <button class="option-btn" data-correct="false"><span class="ltr">D</span> …can only be separated by chemical reactions</button>
+    </div>
+    <div class="feedback" data-explanation="Homogeneous means uniform throughout — no matter which part you sample, it has the same composition and appearance. It still contains more than one substance (unlike a pure substance), but those substances are evenly distributed. Option A describes a pure substance, not a mixture."></div>
+  </div>
+
+  <!-- SECTION D: Separation Techniques -->
+  <div class="sec-hdr sec-d">
+    <div class="sec-icon">⚗️</div>
+    <div class="sec-title">Separation Techniques</div>
+    <div class="sec-pill">SECTION D</div>
+  </div>
+
+  <div class="q-card" data-q="10">
+    <div class="q-num">Q10 · Multiple Choice</div>
+    <div class="q-text">A student needs to separate a mixture of gravel (large stones) and sand (fine particles). Which technique is most appropriate, and which particle property does it rely on?</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false"><span class="ltr">A</span> Filtration — relies on different solubility</button>
+      <button class="option-btn" data-correct="false"><span class="ltr">B</span> Evaporation — relies on different boiling points</button>
+      <button class="option-btn" data-correct="true"><span class="ltr">C</span> Sieving — relies on different particle size</button>
+      <button class="option-btn" data-correct="false"><span class="ltr">D</span> Magnetism — relies on different magnetic properties</button>
+    </div>
+    <div class="feedback" data-explanation="Sieving is ideal here — gravel particles are too large to pass through the sieve holes while sand particles fall through. The property being used is particle size. Neither gravel nor sand is magnetic, neither is dissolved, and we're not dealing with liquids."></div>
+  </div>
+
+  <div class="q-card" data-q="11">
+    <div class="q-num">Q11 · Multiple Choice</div>
+    <div class="q-text">A chemist has a mixture of two liquids — ethanol (boiling point 78°C) and water (boiling point 100°C). Which technique would best separate them, and why?</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false"><span class="ltr">A</span> Filtration — because the liquids have different particle sizes</button>
+      <button class="option-btn" data-correct="true"><span class="ltr">B</span> Distillation — because the liquids have different boiling points</button>
+      <button class="option-btn" data-correct="false"><span class="ltr">C</span> Sieving — because one liquid will pass through the sieve holes</button>
+      <button class="option-btn" data-correct="false"><span class="ltr">D</span> Magnetism — because ethanol is magnetic</button>
+    </div>
+    <div class="feedback" data-explanation="Distillation works by heating the mixture — ethanol evaporates first at 78°C while water remains. The ethanol vapour is collected and cooled back into a liquid, separating it from the water. Filtration and sieving only work for solid–liquid mixtures. Ethanol is not magnetic."></div>
+  </div>
+
+  <div class="q-card" data-q="12">
+    <div class="q-num">Q12 · Multiple Choice</div>
+    <div class="q-text">A student has a mixture of iron nails and plastic beads. They want to recover the iron nails without touching the mixture. What is the best method?</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false"><span class="ltr">A</span> Evaporation — heat the mixture until the plastic evaporates</button>
+      <button class="option-btn" data-correct="false"><span class="ltr">B</span> Filtration — pour the mixture through filter paper</button>
+      <button class="option-btn" data-correct="true"><span class="ltr">C</span> Magnetism — pass a magnet over the mixture to attract the iron</button>
+      <button class="option-btn" data-correct="false"><span class="ltr">D</span> Sieving — use a sieve with holes larger than the nails</button>
+    </div>
+    <div class="feedback" data-explanation="A magnet attracts the iron nails while the plastic beads are unaffected — the separation relies on iron's magnetic property. Evaporation requires a liquid. Filtration requires a solid dissolved or suspended in liquid. Sieving could work by size but a magnet is far more efficient and doesn't require touching."></div>
+  </div>
+
+  <div class="q-card" data-q="13">
+    <div class="q-num">Q13 · Multiple Choice</div>
+    <div class="q-text">Muddy water contains clay particles suspended in water. Which technique would best separate the clay from the water?</div>
+    <div class="options">
+      <button class="option-btn" data-correct="true"><span class="ltr">A</span> Filtration — clay particles are too large to pass through filter paper</button>
+      <button class="option-btn" data-correct="false"><span class="ltr">B</span> Distillation — the clay has a different boiling point to water</button>
+      <button class="option-btn" data-correct="false"><span class="ltr">C</span> Magnetism — clay particles are magnetic</button>
+      <button class="option-btn" data-correct="false"><span class="ltr">D</span> Sieving — clay particles are small enough to pass through sieve holes, so they cannot be caught</button>
+    </div>
+    <div class="feedback" data-explanation="Filtration is correct — clay particles are solid and large enough to be trapped by filter paper, while water molecules pass through as the filtrate. Clay is not magnetic. Sieving holes are much larger than filter paper pores, so clay particles would pass through a sieve. Distillation would work but is far more complex than necessary."></div>
+  </div>
+
+  <div class="q-card" data-q="14">
+    <div class="q-num">Q14 · Multiple Choice</div>
+    <div class="q-text">Seawater contains dissolved salt. A student evaporates the water from a sample of seawater. What property of the salt makes evaporation the right technique?</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false"><span class="ltr">A</span> Salt has a very low boiling point, so it evaporates before the water</button>
+      <button class="option-btn" data-correct="false"><span class="ltr">B</span> Salt is magnetic, so it is left behind as the water evaporates</button>
+      <button class="option-btn" data-correct="true"><span class="ltr">C</span> Salt has a much higher boiling point than water, so water evaporates and leaves the salt behind</button>
+      <button class="option-btn" data-correct="false"><span class="ltr">D</span> Salt particles are too large to evaporate with the water</button>
+    </div>
+    <div class="feedback" data-explanation="Evaporation works because water has a low boiling point (100°C) while salt's boiling point is around 1413°C. When the solution is heated, water particles gain enough energy to escape as vapour, but salt particles cannot — they are left as crystals. The key property is the difference in boiling points."></div>
+  </div>
+
+  <!-- SECTION E: Data Skills -->
+  <div class="sec-hdr sec-e">
+    <div class="sec-icon">📊</div>
+    <div class="sec-title">Data Skills</div>
+    <div class="sec-pill">SECTION E</div>
+  </div>
+
+  <!-- Q15: Cooling curve graph reading -->
+  <div class="q-card" data-q="15">
+    <div class="q-num">Q15 · Graph Reading</div>
+    <div class="q-text">The graph below shows the temperature of hot water cooling over time. What was the temperature at <strong>6 minutes</strong>?</div>
+    <div style="background:#12152a;border-radius:10px;padding:16px;margin-bottom:14px;overflow-x:auto;">
+      <svg viewBox="0 0 390 220" width="100%" style="max-width:390px;display:block;margin:0 auto;font-family:'Space Mono',monospace;">
+        <!-- Axes -->
+        <line x1="55" y1="20" x2="55" y2="180" stroke="#2d3248" stroke-width="1"/>
+        <line x1="55" y1="180" x2="355" y2="180" stroke="#2d3248" stroke-width="1"/>
+        <!-- Horizontal gridlines y: 0=180,20=148,40=116,60=84,80=52,100=20 -->
+        <line x1="55" y1="148" x2="355" y2="148" stroke="#2d3248" stroke-width="0.5" stroke-dasharray="3,3"/>
+        <line x1="55" y1="116" x2="355" y2="116" stroke="#2d3248" stroke-width="0.5" stroke-dasharray="3,3"/>
+        <line x1="55" y1="84"  x2="355" y2="84"  stroke="#2d3248" stroke-width="0.5" stroke-dasharray="3,3"/>
+        <line x1="55" y1="52"  x2="355" y2="52"  stroke="#2d3248" stroke-width="0.5" stroke-dasharray="3,3"/>
+        <line x1="55" y1="20"  x2="355" y2="20"  stroke="#2d3248" stroke-width="0.5" stroke-dasharray="3,3"/>
+        <!-- Vertical gridlines x: 0min=55,2=115,4=175,6=235,8=295,10=355 -->
+        <line x1="115" y1="20" x2="115" y2="180" stroke="#2d3248" stroke-width="0.5" stroke-dasharray="3,3"/>
+        <line x1="175" y1="20" x2="175" y2="180" stroke="#2d3248" stroke-width="0.5" stroke-dasharray="3,3"/>
+        <line x1="235" y1="20" x2="235" y2="180" stroke="#2d3248" stroke-width="0.5" stroke-dasharray="3,3"/>
+        <line x1="295" y1="20" x2="295" y2="180" stroke="#2d3248" stroke-width="0.5" stroke-dasharray="3,3"/>
+        <!-- Y labels -->
+        <text x="48" y="184" fill="#64748b" font-size="9" text-anchor="end">0</text>
+        <text x="48" y="152" fill="#64748b" font-size="9" text-anchor="end">20</text>
+        <text x="48" y="120" fill="#64748b" font-size="9" text-anchor="end">40</text>
+        <text x="48" y="88"  fill="#64748b" font-size="9" text-anchor="end">60</text>
+        <text x="48" y="56"  fill="#64748b" font-size="9" text-anchor="end">80</text>
+        <text x="48" y="24"  fill="#64748b" font-size="9" text-anchor="end">100</text>
+        <!-- X labels (0-10 min) -->
+        <text x="55"  y="195" fill="#64748b" font-size="9" text-anchor="middle">0</text>
+        <text x="115" y="195" fill="#64748b" font-size="9" text-anchor="middle">2</text>
+        <text x="175" y="195" fill="#64748b" font-size="9" text-anchor="middle">4</text>
+        <text x="235" y="195" fill="#64748b" font-size="9" text-anchor="middle">6</text>
+        <text x="295" y="195" fill="#64748b" font-size="9" text-anchor="middle">8</text>
+        <text x="355" y="195" fill="#64748b" font-size="9" text-anchor="middle">10</text>
+        <!-- Axis labels -->
+        <text x="205" y="213" fill="#94a3b8" font-size="9" text-anchor="middle">Time (minutes)</text>
+        <text x="12"  y="100" fill="#94a3b8" font-size="9" text-anchor="middle" transform="rotate(-90,12,100)">Temperature (°C)</text>
+        <!-- Title -->
+        <text x="205" y="13" fill="#e2e8f0" font-size="10" text-anchor="middle" font-weight="bold">Cooling of Hot Water Over Time</text>
+        <!-- Data: 0→90°(y=36), 2→70°(y=68), 4→50°(y=100), 6→30°(y=132), 8→20°(y=148), 10→20°(y=148) -->
+        <!-- y = 180 - (T/100)*160 -->
+        <polyline points="55,36 115,68 175,100 235,132 295,148 355,148" fill="none" stroke="#818cf8" stroke-width="2.5" stroke-linejoin="round"/>
+        <circle cx="55"  cy="36"  r="4" fill="#818cf8"/>
+        <circle cx="115" cy="68"  r="4" fill="#818cf8"/>
+        <circle cx="175" cy="100" r="4" fill="#818cf8"/>
+        <circle cx="235" cy="132" r="4" fill="#818cf8"/>
+        <circle cx="295" cy="148" r="4" fill="#818cf8"/>
+        <circle cx="355" cy="148" r="4" fill="#818cf8"/>
+        <!-- Guide lines at 6 min (x=235, y=132 = 30°C) -->
+        <line x1="235" y1="132" x2="235" y2="180" stroke="#fb923c" stroke-width="1" stroke-dasharray="4,3"/>
+        <line x1="55"  y1="132" x2="235" y2="132" stroke="#fb923c" stroke-width="1" stroke-dasharray="4,3"/>
+      </svg>
+    </div>
+    <div class="options">
+      <button class="option-btn" data-correct="false"><span class="ltr">A</span> 20°C</button>
+      <button class="option-btn" data-correct="false"><span class="ltr">B</span> 40°C</button>
+      <button class="option-btn" data-correct="true"><span class="ltr">C</span> 30°C</button>
+      <button class="option-btn" data-correct="false"><span class="ltr">D</span> 50°C</button>
+    </div>
+    <div class="feedback" data-explanation="Follow the orange dashed lines — at 6 minutes on the x-axis, trace up to the data line then across to the y-axis. The line sits halfway between 20 and 40, which is 30°C. The water has been steadily cooling and has almost reached room temperature by this point."></div>
+  </div>
+
+  <!-- Q16: Graph with wrong type for data -->
+  <div class="q-card" data-q="16">
+    <div class="q-num">Q16 · Multiple Choice</div>
+    <div class="q-text">A student records how many students in their class own each type of pet: dog, cat, fish, rabbit. They draw a line graph to display this. What is wrong with this choice?</div>
+    <div class="options">
+      <button class="option-btn" data-correct="false"><span class="ltr">A</span> Nothing — a line graph is always the best type of graph</button>
+      <button class="option-btn" data-correct="false"><span class="ltr">B</span> The graph needs a title and axis labels before it is correct</button>
+      <button class="option-btn" data-correct="true"><span class="ltr">C</span> Pet type is discrete (separate categories) data — a column graph should be used instead</button>
+      <button class="option-btn" data-correct="false"><span class="ltr">D</span> There are too many categories to fit on a graph</button>
+    </div>
+    <div class="feedback" data-explanation="Line graphs are for continuous data where values change gradually (e.g. temperature over time). Pet type is discrete — there is no meaningful connection between dog, cat, fish, and rabbit on a scale. A column (bar) graph is correct for separate named categories. Note: a graph also needs a title and labels, but that's not what's being asked here."></div>
+  </div>
+
+  <!-- Q17: Reading a column graph -->
+  <div class="q-card" data-q="17">
+    <div class="q-num">Q17 · Graph Reading</div>
+    <div class="q-text">The column graph below shows how many students chose each sport as their favourite. How many more students chose swimming than chose tennis?</div>
+    <div style="background:#12152a;border-radius:10px;padding:16px;margin-bottom:14px;overflow-x:auto;">
+      <svg viewBox="0 0 380 210" width="100%" style="max-width:380px;display:block;margin:0 auto;font-family:'Space Mono',monospace;">
+        <text x="190" y="13" fill="#e2e8f0" font-size="10" text-anchor="middle" font-weight="bold">Favourite Sport in Year 7B</text>
+        <!-- Axes -->
+        <line x1="55" y1="20" x2="55" y2="170" stroke="#2d3248" stroke-width="1"/>
+        <line x1="55" y1="170" x2="355" y2="170" stroke="#2d3248" stroke-width="1"/>
+        <!-- Gridlines: 0=170,5=138,10=106,15=74,20=42 (32px per 5 students) -->
+        <line x1="55" y1="138" x2="355" y2="138" stroke="#2d3248" stroke-width="0.5" stroke-dasharray="3,3"/>
+        <line x1="55" y1="106" x2="355" y2="106" stroke="#2d3248" stroke-width="0.5" stroke-dasharray="3,3"/>
+        <line x1="55" y1="74"  x2="355" y2="74"  stroke="#2d3248" stroke-width="0.5" stroke-dasharray="3,3"/>
+        <line x1="55" y1="42"  x2="355" y2="42"  stroke="#2d3248" stroke-width="0.5" stroke-dasharray="3,3"/>
+        <!-- Y labels -->
+        <text x="48" y="174" fill="#64748b" font-size="9" text-anchor="end">0</text>
+        <text x="48" y="142" fill="#64748b" font-size="9" text-anchor="end">5</text>
+        <text x="48" y="110" fill="#64748b" font-size="9" text-anchor="end">10</text>
+        <text x="48" y="78"  fill="#64748b" font-size="9" text-anchor="end">15</text>
+        <text x="48" y="46"  fill="#64748b" font-size="9" text-anchor="end">20</text>
+        <!-- Bars: Football=18(h=115,y=55), Swimming=14(h=89,y=81), Basketball=10(h=64,y=106), Tennis=6(h=38,y=132) -->
+        <!-- height = students * 6.4 (32px per 5 students = 6.4 per student) -->
+        <!-- Football 18: h=18*6.4=115, y=170-115=55 -->
+        <rect x="70"  y="55"  width="48" height="115" fill="#818cf8" rx="3"/>
+        <!-- Swimming 14: h=89.6≈90, y=80 -->
+        <rect x="148" y="80"  width="48" height="90"  fill="#6ee7b7" rx="3"/>
+        <!-- Basketball 10: h=64, y=106 -->
+        <rect x="226" y="106" width="48" height="64"  fill="#fb923c" rx="3"/>
+        <!-- Tennis 6: h=38, y=132 -->
+        <rect x="304" y="132" width="48" height="38"  fill="#f87171" rx="3"/>
+        <!-- X labels -->
+        <text x="94"  y="185" fill="#64748b" font-size="8" text-anchor="middle">Football</text>
+        <text x="172" y="185" fill="#64748b" font-size="8" text-anchor="middle">Swimming</text>
+        <text x="250" y="185" fill="#64748b" font-size="8" text-anchor="middle">Basketball</text>
+        <text x="328" y="185" fill="#64748b" font-size="8" text-anchor="middle">Tennis</text>
+        <!-- Axis labels -->
+        <text x="205" y="200" fill="#94a3b8" font-size="9" text-anchor="middle">Sport</text>
+        <text x="12"  y="95"  fill="#94a3b8" font-size="9" text-anchor="middle" transform="rotate(-90,12,95)">Number of Students</text>
+      </svg>
+    </div>
+    <div class="options">
+      <button class="option-btn" data-correct="false"><span class="ltr">A</span> 4 more students</button>
+      <button class="option-btn" data-correct="false"><span class="ltr">B</span> 6 more students</button>
+      <button class="option-btn" data-correct="true"><span class="ltr">C</span> 8 more students</button>
+      <button class="option-btn" data-correct="false"><span class="ltr">D</span> 14 more students</button>
+    </div>
+    <div class="feedback" data-explanation="Swimming = 14 students; Tennis = 6 students. 14 − 6 = 8 more students chose swimming. To read the graph: trace the top of each bar across to the y-axis to read the value. Always read graphs carefully — the grid lines are at every 5 students."></div>
+  </div>
+
+  <!-- Q18: Pie chart - class pets -->
+  <div class="q-card" data-q="18">
+    <div class="q-num">Q18 · Graph Reading</div>
+    <div class="q-text">The pie chart shows what pet students in a class own. What percentage own a <strong>bird</strong>?</div>
+    <div style="background:#12152a;border-radius:10px;padding:16px;margin-bottom:14px;overflow-x:auto;">
+      <svg viewBox="0 0 360 200" width="100%" style="max-width:360px;display:block;margin:0 auto;font-family:'Space Mono',monospace;">
+        <text x="180" y="14" fill="#e2e8f0" font-size="10" text-anchor="middle" font-weight="bold">Pets Owned by Class 7C Students</text>
+        <!-- Centre (110,110) radius 80 -->
+        <!-- Slices starting from top (-90°), clockwise: -->
+        <!-- Dog 40% (144°): start top(110,30), end (157,175) large=0 -->
+        <path d="M110,110 L110,30 A80,80 0 0,1 157,175 Z" fill="#818cf8"/>
+        <!-- Cat 30% (108°): start(157,175), end(34,135) large=0 -->
+        <path d="M110,110 L157,175 A80,80 0 0,1 34,135 Z" fill="#6ee7b7"/>
+        <!-- Fish 15% (54°): start(34,135), end(45,63) large=0 -->
+        <path d="M110,110 L34,135 A80,80 0 0,1 45,63 Z" fill="#fb923c"/>
+        <!-- Bird 10% (36°): start(45,63), end(85,34) large=0 -->
+        <path d="M110,110 L45,63 A80,80 0 0,1 85,34 Z" fill="#f87171"/>
+        <!-- Other 5% (18°): start(85,34), end(110,30) large=0 -->
+        <path d="M110,110 L85,34 A80,80 0 0,1 110,30 Z" fill="#94a3b8"/>
+        <!-- Legend -->
+        <rect x="210" y="30"  width="10" height="10" fill="#818cf8" rx="2"/>
+        <text x="225" y="40"  fill="#e2e8f0" font-size="9">Dog (40%)</text>
+        <rect x="210" y="50"  width="10" height="10" fill="#6ee7b7" rx="2"/>
+        <text x="225" y="60"  fill="#e2e8f0" font-size="9">Cat (30%)</text>
+        <rect x="210" y="70"  width="10" height="10" fill="#fb923c" rx="2"/>
+        <text x="225" y="80"  fill="#e2e8f0" font-size="9">Fish (15%)</text>
+        <rect x="210" y="90"  width="10" height="10" fill="#f87171" rx="2"/>
+        <text x="225" y="100" fill="#e2e8f0" font-size="9">Bird (?%)</text>
+        <rect x="210" y="110" width="10" height="10" fill="#94a3b8" rx="2"/>
+        <text x="225" y="120" fill="#e2e8f0" font-size="9">Other (5%)</text>
+        <text x="180" y="185" fill="#64748b" font-size="8" text-anchor="middle">All percentages must add to 100%</text>
+      </svg>
+    </div>
+    <div class="options">
+      <button class="option-btn" data-correct="false"><span class="ltr">A</span> 5%</button>
+      <button class="option-btn" data-correct="true"><span class="ltr">B</span> 10%</button>
+      <button class="option-btn" data-correct="false"><span class="ltr">C</span> 15%</button>
+      <button class="option-btn" data-correct="false"><span class="ltr">D</span> 20%</button>
+    </div>
+    <div class="feedback" data-explanation="All slices must add to 100%. Dog (40%) + Cat (30%) + Fish (15%) + Other (5%) = 90%. So Bird = 100% − 90% = 10%. This is the same strategy as before: add all known slices and subtract from 100 to find the missing one."></div>
+  </div>
+
+  <!-- Q19: Anomalous data point -->
+  <div class="q-card" data-q="19">
+    <div class="q-num">Q19 · Graph Reading</div>
+    <div class="q-text">The graph below shows temperature readings taken during a cooling experiment. One data point does not fit the pattern. Which reading is the <strong>anomalous result</strong>?</div>
+    <div style="background:#12152a;border-radius:10px;padding:16px;margin-bottom:14px;overflow-x:auto;">
+      <svg viewBox="0 0 390 220" width="100%" style="max-width:390px;display:block;margin:0 auto;font-family:'Space Mono',monospace;">
+        <text x="205" y="13" fill="#e2e8f0" font-size="10" text-anchor="middle" font-weight="bold">Cooling Experiment Results</text>
+        <!-- Axes -->
+        <line x1="55" y1="20" x2="55" y2="180" stroke="#2d3248" stroke-width="1"/>
+        <line x1="55" y1="180" x2="355" y2="180" stroke="#2d3248" stroke-width="1"/>
+        <!-- Gridlines -->
+        <line x1="55" y1="148" x2="355" y2="148" stroke="#2d3248" stroke-width="0.5" stroke-dasharray="3,3"/>
+        <line x1="55" y1="116" x2="355" y2="116" stroke="#2d3248" stroke-width="0.5" stroke-dasharray="3,3"/>
+        <line x1="55" y1="84"  x2="355" y2="84"  stroke="#2d3248" stroke-width="0.5" stroke-dasharray="3,3"/>
+        <line x1="55" y1="52"  x2="355" y2="52"  stroke="#2d3248" stroke-width="0.5" stroke-dasharray="3,3"/>
+        <line x1="55" y1="20"  x2="355" y2="20"  stroke="#2d3248" stroke-width="0.5" stroke-dasharray="3,3"/>
+        <line x1="115" y1="20" x2="115" y2="180" stroke="#2d3248" stroke-width="0.5" stroke-dasharray="3,3"/>
+        <line x1="175" y1="20" x2="175" y2="180" stroke="#2d3248" stroke-width="0.5" stroke-dasharray="3,3"/>
+        <line x1="235" y1="20" x2="235" y2="180" stroke="#2d3248" stroke-width="0.5" stroke-dasharray="3,3"/>
+        <line x1="295" y1="20" x2="295" y2="180" stroke="#2d3248" stroke-width="0.5" stroke-dasharray="3,3"/>
+        <!-- Y labels -->
+        <text x="48" y="184" fill="#64748b" font-size="9" text-anchor="end">0</text>
+        <text x="48" y="152" fill="#64748b" font-size="9" text-anchor="end">20</text>
+        <text x="48" y="120" fill="#64748b" font-size="9" text-anchor="end">40</text>
+        <text x="48" y="88"  fill="#64748b" font-size="9" text-anchor="end">60</text>
+        <text x="48" y="56"  fill="#64748b" font-size="9" text-anchor="end">80</text>
+        <text x="48" y="24"  fill="#64748b" font-size="9" text-anchor="end">100</text>
+        <!-- X labels -->
+        <text x="55"  y="195" fill="#64748b" font-size="9" text-anchor="middle">0</text>
+        <text x="115" y="195" fill="#64748b" font-size="9" text-anchor="middle">2</text>
+        <text x="175" y="195" fill="#64748b" font-size="9" text-anchor="middle">4</text>
+        <text x="235" y="195" fill="#64748b" font-size="9" text-anchor="middle">6</text>
+        <text x="295" y="195" fill="#64748b" font-size="9" text-anchor="middle">8</text>
+        <text x="355" y="195" fill="#64748b" font-size="9" text-anchor="middle">10</text>
+        <text x="205" y="213" fill="#94a3b8" font-size="9" text-anchor="middle">Time (minutes)</text>
+        <text x="12"  y="100" fill="#94a3b8" font-size="9" text-anchor="middle" transform="rotate(-90,12,100)">Temperature (°C)</text>
+        <!-- Normal trend line (dashed, expected) for reference -->
+        <polyline points="55,52 115,84 355,148" fill="none" stroke="#2d3248" stroke-width="1" stroke-dasharray="5,3"/>
+        <!-- Data: 0→80°(y=52), 2→60°(y=84), 4→40°(y=116), 6→55°(y=96 ANOMALOUS), 8→20°(y=148), 10→20°(y=148) -->
+        <!-- y = 180-(T/100)*160 -->
+        <!-- 6min anomaly: expected ~20°, recorded 55° → y=180-(55/100)*160=180-88=92 -->
+        <!-- Draw lines between normal points, with anomaly clearly off trend -->
+        <polyline points="55,52 115,84 175,116" fill="none" stroke="#6ee7b7" stroke-width="2.5" stroke-linejoin="round"/>
+        <polyline points="295,148 355,148" fill="none" stroke="#6ee7b7" stroke-width="2.5" stroke-linejoin="round"/>
+        <!-- Normal dots -->
+        <circle cx="55"  cy="52"  r="4" fill="#6ee7b7"/>
+        <circle cx="115" cy="84"  r="4" fill="#6ee7b7"/>
+        <circle cx="175" cy="116" r="4" fill="#6ee7b7"/>
+        <circle cx="295" cy="148" r="4" fill="#6ee7b7"/>
+        <circle cx="355" cy="148" r="4" fill="#6ee7b7"/>
+        <!-- Anomalous point at 6min, 55°C → y=92 — shown in red, disconnected -->
+        <circle cx="235" cy="92" r="5" fill="#f87171"/>
+        <text x="248" y="89" fill="#f87171" font-size="8">← 6 min</text>
+        <!-- Expected position ghost circle -->
+        <circle cx="235" cy="148" r="4" fill="none" stroke="#64748b" stroke-width="1.5" stroke-dasharray="3,2"/>
+      </svg>
+    </div>
+    <div class="options">
+      <button class="option-btn" data-correct="false"><span class="ltr">A</span> The reading at 2 minutes</button>
+      <button class="option-btn" data-correct="false"><span class="ltr">B</span> The reading at 4 minutes</button>
+      <button class="option-btn" data-correct="true"><span class="ltr">C</span> The reading at 6 minutes</button>
+      <button class="option-btn" data-correct="false"><span class="ltr">D</span> The reading at 8 minutes</button>
+    </div>
+    <div class="feedback" data-explanation="The 6-minute reading (shown in red) is clearly anomalous — all other readings follow a smooth downward cooling trend, but the 6-minute point jumps back up to 55°C when it should be around 20°C based on the trend. In a real experiment, you would repeat the measurement at 6 minutes to check whether this was a recording error or equipment fault."></div>
+  </div>
+
+  <!-- SHORT ANSWER -->
+  <div class="sec-hdr" style="margin-top:36px;">
+    <div class="sec-icon" style="background:rgba(251,146,60,.15)">✍️</div>
+    <div class="sec-title">Short Answer Questions</div>
+    <div class="sec-pill" style="background:rgba(251,146,60,.15);color:var(--orange)">SECTION F</div>
+  </div>
+  <p class="sa-intro">Write your answers below. After you submit, the model answer will appear and you'll self-assess your response.</p>
+
+  <div class="q-card" data-q="20" data-sa="true"
+    data-model="A pure substance contains only one type of particle (either a single element or a single compound). It has a fixed composition and consistent properties throughout — for example, its melting point and boiling point are always the same. Example: pure water (H₂O) or pure gold (Au). A mixture contains two or more different substances that are not chemically joined. Its composition can vary and it can be separated by physical means. Example: saltwater (water + dissolved salt) or air (nitrogen + oxygen + other gases).">
+    <div class="q-num">Q20 · Short Answer <span class="sa-pts-label">/ 2 pts</span></div>
+    <div class="q-text">Explain the difference between a <strong>pure substance</strong> and a <strong>mixture</strong>. Give one example of each.</div>
+    <div class="sa-wrap"><textarea rows="4" placeholder="Type your answer here…"></textarea></div>
+    <div class="sa-assess" style="display:none;"></div>
+  </div>
+
+  <div class="q-card" data-q="21" data-sa="true"
+    data-model="State of matter changes as follows: Solid → heated → particles gain energy, vibrate faster, break free from fixed positions → melts to Liquid. Liquid → heated further → particles gain more energy, overcome attractions, escape from surface → evaporates/boils to Gas. Cooling reverses this: Gas → cooled → particles slow down, attractions pull them together → condenses to Liquid. Liquid → cooled → particles slow, attractions hold them in fixed positions → freezes to Solid. Throughout all changes, the particles themselves do not change.">
+    <div class="q-num">Q21 · Short Answer <span class="sa-pts-label">/ 2 pts</span></div>
+    <div class="q-text">Using the particle model, describe what happens to particles when a substance changes from a <strong>solid to a gas</strong> (when heated). Make sure you mention energy, movement, and the forces between particles.</div>
+    <div class="sa-wrap"><textarea rows="5" placeholder="Type your answer here…"></textarea></div>
+    <div class="sa-assess" style="display:none;"></div>
+  </div>
+
+  <div class="q-card" data-q="22" data-sa="true"
+    data-model="The best technique is distillation. Distillation works by heating the mixture — the substance with the lower boiling point (ethanol, 78°C) evaporates first while water (boiling point 100°C) remains as a liquid. The ethanol vapour is collected, then cooled in a condenser so it turns back into a liquid. This separates the two liquids because they have different boiling points. Filtration and sieving would not work because both substances are liquids.">
+    <div class="q-num">Q22 · Short Answer <span class="sa-pts-label">/ 2 pts</span></div>
+    <div class="q-text">A student has a mixture of ethanol (a liquid, boiling point 78°C) and water (boiling point 100°C). Name the best separation technique and explain, using particle ideas, how it separates the two liquids.</div>
+    <div class="sa-wrap"><textarea rows="4" placeholder="Type your answer here…"></textarea></div>
+    <div class="sa-assess" style="display:none;"></div>
+  </div>
+
+  <button class="submit-btn" onclick="submitTest()">Submit &amp; See My Score →</button>
+
+  <div class="score-box" id="scoreBox">
+    <h2>Test Complete! 🎉</h2>
+    <div class="big-score" id="scoreDisplay">—</div>
+    <div class="score-sub" id="scoreSub"></div>
+    <div class="score-grid" id="scoreGrid"></div>
+    <div class="score-msg" id="scoreMsg"></div>
+    <button class="again-btn" onclick="resetTest()">Try Again</button>
+  </div>
+
+</div><!-- end t-main -->
+
+<script>
+// ══════════════════════════════════════
+//  CONSTANTS
+// ══════════════════════════════════════
+const MCQ_TOTAL = 19;
+const SA_TOTAL  = 3;
+const MAX_SCORE = MCQ_TOTAL + SA_TOTAL * 2; // 25 pts
+
+// ══════════════════════════════════════
+//  STATE
+// ══════════════════════════════════════
+let answered  = new Set();
+let submitted = false;
+let testMode  = false;
+let saScores  = {};
+
+// ══════════════════════════════════════
+//  MODE TOGGLE
+// ══════════════════════════════════════
+function setMode(m){
+  const wasTest = testMode;
+  testMode = m === 'test';
+  document.getElementById('btnStudy').classList.toggle('on', !testMode);
+  document.getElementById('btnTest').classList.toggle('on',   testMode);
+  document.getElementById('modeHint').innerHTML = testMode
+    ? '🎯 <strong>Test Mode</strong> — answers lock in, feedback hidden until you submit.'
+    : '📖 <strong>Study Mode</strong> — each answer reveals instantly whether you got it right.';
+  const body = document.querySelector('div#scoreBox')?.closest('body') || document.body;
+  const testEl = document.body;
+  testEl.classList.toggle('is-test-mode', testMode);
+
+  if(!submitted){
+    if(!testMode && wasTest){
+      // Switched to Study: finalise selected answers and reveal feedback
+      document.querySelectorAll('.option-btn.selected').forEach(btn=>{
+        const card = btn.closest('.q-card');
+        const userCorrect = btn.dataset.correct === 'true';
+        card.querySelectorAll('.option-btn').forEach(b=>{
+          b.disabled = true; b.classList.remove('selected');
+          if(b.dataset.correct==='true') b.classList.add('correct');
+        });
+        if(!userCorrect) btn.classList.add('wrong');
+      });
+      document.querySelectorAll('.feedback.pending').forEach(fb=>{
+        fb.classList.remove('pending'); fb.classList.add('show');
+      });
+    } else if(testMode && !wasTest){
+      // Switched to Test: hide visible feedback
+      document.querySelectorAll('.feedback.show').forEach(fb=>{
+        fb.classList.remove('show'); fb.classList.add('pending');
+      });
+    }
+  }
+}
+
+// ══════════════════════════════════════
+//  PROGRESS BAR
+// ══════════════════════════════════════
+function updateProg(){
+  const total = document.querySelectorAll('[data-q]').length;
+  const pct   = total ? (answered.size/total)*100 : 0;
+  document.getElementById('progBar').style.width   = pct+'%';
+  document.getElementById('progLabel').textContent = answered.size+' of '+total+' answered';
+}
+
+// ══════════════════════════════════════
+//  OPTION BUTTONS
+// ══════════════════════════════════════
+document.querySelectorAll('.options').forEach(grp=>{
+  grp.querySelectorAll('.option-btn').forEach(btn=>{
+    btn.addEventListener('click', function(){
+      if(btn.disabled || submitted) return;
+      const card    = btn.closest('.q-card');
+      const correct = btn.dataset.correct === 'true';
+      const fb      = card.querySelector('.feedback');
+      const expl    = fb.dataset.explanation || '';
+
+      if(testMode){
+        // Highlight selection only — keep buttons live for changing mind
+        card.querySelectorAll('.option-btn').forEach(b=> b.classList.remove('selected'));
+        btn.classList.add('selected');
+        fb.className = 'feedback pending';
+        fb.innerHTML = (correct ? '<strong>✅ Correct!</strong> ' : '<strong>❌ Not quite!</strong> ') + expl;
+        card.dataset.selectedCorrect = correct ? 'true' : 'false';
+      } else {
+        // Study mode: lock immediately
+        card.querySelectorAll('.option-btn').forEach(b=>{
+          b.disabled = true; b.classList.remove('selected');
+          if(b.dataset.correct==='true') b.classList.add('correct');
+        });
+        if(!correct){ btn.classList.add('wrong'); fb.classList.add('bad'); fb.innerHTML='<strong>❌ Not quite!</strong> '+expl; }
+        else         {                             fb.classList.add('ok');  fb.innerHTML='<strong>✅ Correct!</strong> '+expl; }
+        fb.classList.add('show');
+      }
+      answered.add(card.dataset.q);
+      updateProg();
+    });
+  });
+});
+
+// ══════════════════════════════════════
+//  STUDY NOTES
+// ══════════════════════════════════════
+const studyNotes = {
+  1: `<strong>📖 Reminder — What is a Mixture?</strong><br>A mixture contains two or more substances <em>physically</em> combined — not chemically bonded. Each substance keeps its own properties, and the mixture can be separated by physical methods. A pure substance has only ONE type of particle throughout.`,
+  2: `<strong>📖 Reminder — Spotting a Mixture</strong><br>Ask: does it contain more than one type of substance, not chemically joined? Air = nitrogen + oxygen + other gases mixed together = mixture. Pure copper is one element; CO₂ and H₂O are compounds. Both elements and compounds are pure substances.`,
+  3: `<strong>📖 Reminder — What is a Compound?</strong><br>A compound has TWO or more different types of atoms <em>chemically bonded</em> in a fixed ratio. E.g. H₂O is always 2 hydrogen + 1 oxygen, bonded. This is different from a mixture where substances are just mixed, not bonded.`,
+  4: `<strong>📖 Reminder — Appearances can be Deceiving</strong><br>Something can look uniform and still be a mixture. Saltwater looks clear; milk looks uniform — both are mixtures. The test is not how it looks, but whether it contains more than one type of substance not chemically joined.`,
+  5: `<strong>📖 Reminder — Particles Always Move</strong><br>A key rule: particles are ALWAYS moving in all states of matter. In solids they vibrate in fixed positions. In liquids they flow. In gases they move rapidly and freely. None of these states has stationary particles.`,
+  6: `<strong>📖 Reminder — Liquid Particles</strong><br>Liquids are the middle state: particles are <em>close together</em> (like a solid) but <em>can flow past each other</em> (unlike a solid). Attraction between liquid particles is moderate — not enough to hold fixed positions, but enough to keep them together as a liquid.`,
+  7: `<strong>📖 Reminder — Cooling a Gas</strong><br>Cooling = particles losing energy = slowing down. As gas particles slow, the attractions between them become strong enough to pull them together — they condense into a liquid. The particles themselves do not change; only their energy and arrangement change.`,
+  8: `<strong>📖 Reminder — Heterogeneous Mixtures</strong><br>Heterogeneous = NOT uniform. You can see (or detect) different parts. Oil and vinegar separate into visible layers = heterogeneous. Saltwater and air are homogeneous — perfectly uniform throughout. An alloy like brass is also homogeneous — metals mix uniformly.`,
+  9: `<strong>📖 Reminder — Homogeneous Mixtures</strong><br>Homogeneous = uniform throughout — every sample looks and behaves the same. It still has more than one substance (unlike a pure substance), but they are evenly mixed. Don't confuse homogeneous mixture with pure substance — pure has ONE type of particle; homogeneous has several, evenly mixed.`,
+  10: `<strong>📖 Reminder — Choosing Sieving</strong><br>Use sieving when two solid components differ in <em>particle size</em>. Gravel is too large to fall through sieve holes; sand passes through. Neither needs to be magnetic, dissolved, or liquid — just different sizes.`,
+  11: `<strong>📖 Reminder — Choosing Distillation</strong><br>Use distillation when you need to separate two <em>liquids with different boiling points</em>. Heat the mixture — the lower boiling point liquid evaporates first, is collected as vapour, then cooled back to a liquid. The other liquid stays behind.`,
+  12: `<strong>📖 Reminder — Choosing Magnetism</strong><br>Use magnetism when one component is magnetic (iron, steel, nickel) and the other is not. Pass a magnet through — magnetic particles cling to it, non-magnetic particles are left behind. Quick, clean, and doesn't require any liquid.`,
+  13: `<strong>📖 Reminder — Choosing Filtration</strong><br>Use filtration when you have a solid suspended in a liquid. The solid particles are too large to pass through filter paper; the liquid passes through as the filtrate. Clay, sand, and other undissolved solids are separated this way.`,
+  14: `<strong>📖 Reminder — Why Evaporation Works for Salt</strong><br>Salt has a boiling point around 1413°C — far higher than water's 100°C. When saltwater is heated, water particles escape as steam while salt particles cannot — they stay behind as crystals. The key: very different boiling points.`,
+  15: `<strong>📖 Reminder — Reading a Line Graph</strong><br>Find your x-value (6 min), trace straight up to the line, then trace straight across to the y-axis. Read the value there. Watch the scale — here each gridline = 20°C, so halfway between two gridlines = 10°C intervals.`,
+  16: `<strong>📖 Reminder — Choosing the Right Graph Type</strong><br>Line graph = continuous data (both axes are numbers that change gradually, e.g. temperature over time). Column graph = discrete data (separate named categories, e.g. types of pet, types of sport). Using the wrong type misrepresents the data.`,
+  17: `<strong>📖 Reminder — Reading a Column Graph</strong><br>To compare two bars: read each bar's height by tracing to the y-axis, then subtract. Swimming = 14, Tennis = 6, difference = 8. Always check what each gridline represents before reading values.`,
+  18: `<strong>📖 Reminder — Missing Pie Slice</strong><br>All slices must total 100%. Add up all the known slices, subtract from 100 to find the missing one. Dog (40) + Cat (30) + Fish (15) + Other (5) = 90. Bird = 100 − 90 = 10%.`,
+  19: `<strong>📖 Reminder — Anomalous Results</strong><br>An anomalous result is one that doesn't fit the pattern of the other data. In a cooling experiment, temperature should fall steadily over time. A point that jumps back up is clearly anomalous. In a real experiment, you would repeat that reading to check if it was an error.`,
+};
+
+// ══════════════════════════════════════
+//  SELF-ASSESS SHORT ANSWERS
+// ══════════════════════════════════════
+function assessSA(btn, qNum, pts){
+  const card = document.querySelector('[data-q="'+qNum+'"]');
+  card.querySelectorAll('.sa-btn').forEach(b=>{ b.disabled=true; b.classList.remove('selected-assess'); });
+  btn.classList.add('selected-assess');
+  saScores[qNum] = pts;
+  const reveal = card.querySelector('.sa-score-reveal');
+  if(reveal) reveal.textContent = pts===2 ? '✓ 2 / 2 points' : pts===1 ? '✓ 1 / 2 points' : '0 / 2 points — keep studying this one!';
+  updateScoreDisplay();
+}
+
+function countMCQ(){
+  let n=0;
+  document.querySelectorAll('[data-q]').forEach(card=>{
+    const q=parseInt(card.dataset.q);
+    if(q>MCQ_TOTAL) return;
+    if(!card.querySelector('.option-btn.wrong') && card.querySelector('.option-btn.correct')) n++;
+  });
+  return n;
+}
+
+function updateScoreDisplay(){
+  if(!submitted) return;
+  const mcq = countMCQ();
+  const sa  = Object.values(saScores).reduce((a,b)=>a+b,0);
+  const total = mcq+sa;
+  const pct = Math.round((total/MAX_SCORE)*100);
+  document.getElementById('scoreDisplay').textContent = total+'/'+MAX_SCORE;
+  document.getElementById('scoreSub').textContent     = pct+'% · '+mcq+' MCQ pts + '+sa+' written pts';
+  const saCell = document.getElementById('saGridVal');
+  if(saCell){
+    const n = Object.keys(saScores).length;
+    const col = sa===SA_TOTAL*2?'#6ee7b7':sa>=SA_TOTAL?'#fb923c':'#f87171';
+    const emo = sa===SA_TOTAL*2?'✅':sa>=SA_TOTAL?'🟡':'🔴';
+    saCell.textContent = n<SA_TOTAL ? sa+'/'+(SA_TOTAL*2)+' so far' : emo+' '+sa+'/'+(SA_TOTAL*2);
+    saCell.style.color = n<SA_TOTAL ? '#94a3b8' : col;
+  }
+  if(Object.keys(saScores).length===SA_TOTAL){
+    const msgs = {90:"Outstanding — you clearly understand these concepts deeply! 🌟",70:"Great work! Review the study notes below for anything you got wrong.",50:"Good effort! Read the study notes, then retry the tricky questions.",0:"Keep going — study notes are waiting below each tricky question. You've got this! 💪"};
+    document.getElementById('scoreMsg').textContent = pct>=90?msgs[90]:pct>=70?msgs[70]:pct>=50?msgs[50]:msgs[0];
+  }
+}
+
+// ══════════════════════════════════════
+//  SUBMIT
+// ══════════════════════════════════════
+function submitTest(){
+  submitted = true;
+  document.querySelector('.submit-btn').style.display = 'none';
+
+  // Finalise test-mode selections
+  document.querySelectorAll('[data-q]').forEach(card=>{
+    const sel = card.querySelector('.option-btn.selected');
+    if(!sel) return;
+    const userCorrect = sel.dataset.correct === 'true';
+    card.querySelectorAll('.option-btn').forEach(b=>{
+      b.disabled=true; b.classList.remove('selected');
+      if(b.dataset.correct==='true') b.classList.add('correct');
+    });
+    if(!userCorrect) sel.classList.add('wrong');
+  });
+
+  const mcq = countMCQ();
+  document.getElementById('scoreDisplay').textContent = mcq+'/'+MAX_SCORE;
+  document.getElementById('scoreSub').textContent     = 'MCQ: '+mcq+'/'+MCQ_TOTAL+' pts — self-assess written answers below to see your full score';
+
+  const secs = [
+    {name:'Types of Substances', qs:[1,2,3,4]},
+    {name:'Particle Model',      qs:[5,6,7]},
+    {name:'Mixtures',            qs:[8,9]},
+    {name:'Separation',          qs:[10,11,12,13,14]},
+    {name:'Data Skills',         qs:[15,16,17,18,19]},
+  ];
+  let grid='';
+  secs.forEach(sec=>{
+    let r=0;
+    sec.qs.forEach(qn=>{
+      const c=document.querySelector('[data-q="'+qn+'"]');
+      if(c && !c.querySelector('.option-btn.wrong') && c.querySelector('.option-btn.correct')) r++;
+    });
+    const col=r===sec.qs.length?'#6ee7b7':r>=sec.qs.length/2?'#fb923c':'#f87171';
+    const emo=r===sec.qs.length?'✅':r>=sec.qs.length/2?'🟡':'🔴';
+    grid+=`<div class="sg-item"><div class="sg-lbl">${sec.name}</div><div class="sg-val" style="color:${col}">${emo} ${r}/${sec.qs.length}</div></div>`;
+  });
+  grid+=`<div class="sg-item"><div class="sg-lbl">Written (self-assess)</div><div class="sg-val" id="saGridVal" style="color:#94a3b8">— / 6</div></div>`;
+  document.getElementById('scoreGrid').innerHTML = grid;
+  document.getElementById('scoreMsg').textContent = 'Self-assess your written answers below, then your full score will update above.';
+
+  const box = document.getElementById('scoreBox');
+  box.style.display='block';
+  box.scrollIntoView({behavior:'smooth'});
+
+  // Reveal pending MCQ feedback
+  document.body.classList.remove('is-test-mode');
+  document.querySelectorAll('.feedback.pending').forEach(fb=>{ fb.classList.remove('pending'); fb.classList.add('show'); });
+
+  // MCQ study notes on wrong answers
+  document.querySelectorAll('[data-q]').forEach(card=>{
+    const n=parseInt(card.dataset.q);
+    if(n>MCQ_TOTAL || !card.querySelector('.option-btn.wrong') || card.querySelector('.study-note')) return;
+    const note=studyNotes[n]; if(!note) return;
+    const d=document.createElement('div');
+    d.className='study-note';
+    d.innerHTML='<div class="sn-inner"><div class="sn-text">'+note+'</div><button class="retry-btn" onclick="retryQ(this)">↩ Try Again</button></div>';
+    card.appendChild(d);
+    requestAnimationFrame(()=>d.classList.add('show'));
+  });
+
+  // Short answer self-assessment panels
+  document.querySelectorAll('[data-sa="true"]').forEach(card=>{
+    const qNum  = card.dataset.q;
+    const model = card.dataset.model || '';
+    const assess= card.querySelector('.sa-assess');
+    if(!assess) return;
+    const ta = card.querySelector('textarea');
+    if(ta) ta.disabled=true;
+    assess.innerHTML=`
+      <div class="sa-model"><strong>📋 Model Answer</strong>${model}</div>
+      <div class="sa-prompt">How did you go? Be honest with yourself:</div>
+      <div class="sa-btns">
+        <button class="sa-btn sa-correct" onclick="assessSA(this,${qNum},2)">✅ Got it — 2 pts</button>
+        <button class="sa-btn sa-partial"  onclick="assessSA(this,${qNum},1)">🟡 Not quite — 1 pt</button>
+        <button class="sa-btn sa-missed"   onclick="assessSA(this,${qNum},0)">🔴 Need to study — 0 pts</button>
+      </div>
+      <div class="sa-score-reveal"></div>`;
+    assess.style.display='block';
+    answered.add(qNum);
+  });
+  updateProg();
+}
+
+// ══════════════════════════════════════
+//  RETRY + RESET
+// ══════════════════════════════════════
+function retryQ(btn){
+  if(submitted) return;
+  const card=btn.closest('.q-card');
+  card.querySelectorAll('.option-btn').forEach(b=>{ b.disabled=false; b.classList.remove('correct','wrong','selected'); });
+  const fb=card.querySelector('.feedback');
+  fb.className='feedback'; fb.innerHTML='';
+  const note=card.querySelector('.study-note');
+  if(note){ note.classList.remove('show'); setTimeout(()=>note.remove(),300); }
+  card.scrollIntoView({behavior:'smooth',block:'center'});
+  card.classList.add('hi'); setTimeout(()=>card.classList.remove('hi'),1200);
+}
+
+function resetTest(){
+  submitted=false; testMode=false; saScores={};
+  document.getElementById('btnStudy').classList.add('on');
+  document.getElementById('btnTest').classList.remove('on');
+  document.body.classList.remove('is-test-mode');
+  document.getElementById('modeHint').innerHTML='📖 <strong>Study Mode</strong> — each answer reveals instantly whether you got it right.';
+  document.querySelectorAll('.option-btn').forEach(b=>{ b.disabled=false; b.classList.remove('correct','wrong','selected'); });
+  document.querySelectorAll('.feedback').forEach(fb=>{ fb.className='feedback'; fb.innerHTML=''; });
+  document.querySelectorAll('textarea').forEach(t=>{ t.value=''; t.disabled=false; });
+  document.querySelectorAll('.sa-assess').forEach(a=>{ a.style.display='none'; a.innerHTML=''; });
+  document.querySelectorAll('.study-note').forEach(n=>n.remove());
+  document.getElementById('scoreBox').style.display='none';
+  document.querySelector('.submit-btn').style.display='';
+  answered=new Set();
+  updateProg();
+  window.scrollTo(0,0);
+}
+
+// Init
+updateProg();
+</script>
+</body>
+</html>
